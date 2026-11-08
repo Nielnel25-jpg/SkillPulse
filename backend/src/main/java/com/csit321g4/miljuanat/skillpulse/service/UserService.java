@@ -84,6 +84,14 @@ public class UserService {
         return toResponse(user);
     }
 
+        public void deletePermanently(Long id, String actingEmail) {
+        User user = find(id);
+        if (user.getEmail().equalsIgnoreCase(actingEmail)) {
+            throw ApiException.badRequest("You cannot delete your own account");
+        }
+        users.delete(user);
+    }
+
     /**
      * Changes a user's role. JPA cannot change an entity's subclass, so the subtype row is swapped with native SQL.
      */

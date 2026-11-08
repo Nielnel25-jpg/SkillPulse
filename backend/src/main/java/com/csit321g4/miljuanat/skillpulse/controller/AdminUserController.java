@@ -21,6 +21,13 @@ public class AdminUserController {
 
     public AdminUserController(UserService userService) { this.userService = userService; }
 
+        /** DELETE /api/admin/users/{id}/permanent - removes the user completely. */
+    @DeleteMapping("/{id}/permanent")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletePermanently(@PathVariable Long id, Principal p) {
+        userService.deletePermanently(id, p.getName());
+    }
+
     /** POST /api/admin/users - create a Student, Instructor or Admin account. */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
