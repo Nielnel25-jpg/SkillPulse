@@ -1,4 +1,4 @@
-# MILJUANAT
+# SkillPulse
 
 SkillPulse: Academic Diagnostic & Performance Analytics Dashboard
 
