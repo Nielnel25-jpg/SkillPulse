@@ -9,9 +9,6 @@ import com.csit321g4.miljuanat.skillpulse.model.Instructor;
 import com.csit321g4.miljuanat.skillpulse.model.Role;
 import com.csit321g4.miljuanat.skillpulse.model.Student;
 import com.csit321g4.miljuanat.skillpulse.model.User;
-import com.csit321g4.miljuanat.skillpulse.repository.AssessmentRepository;
-import com.csit321g4.miljuanat.skillpulse.repository.CompetencyMasteryRepository;
-import com.csit321g4.miljuanat.skillpulse.repository.StudentResponseRepository;
 import com.csit321g4.miljuanat.skillpulse.repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import java.util.List;
@@ -26,19 +23,11 @@ public class UserService {
     private final UserRepository users;
     private final PasswordEncoder encoder;
     private final EntityManager em;
-    private final StudentResponseRepository responses;
-    private final CompetencyMasteryRepository masteries;
-    private final AssessmentRepository assessments;
 
-    public UserService(UserRepository users, PasswordEncoder encoder, EntityManager em,
-                       StudentResponseRepository responses, CompetencyMasteryRepository masteries,
-                       AssessmentRepository assessments) {
+    public UserService(UserRepository users, PasswordEncoder encoder, EntityManager em) {
         this.users = users;
         this.encoder = encoder;
         this.em = em;
-        this.responses = responses;
-        this.masteries = masteries;
-        this.assessments = assessments;
     }
 
     public UserResponse create(CreateUserRequest req) {
@@ -97,7 +86,6 @@ public class UserService {
 
     /**
      * Changes a user's role. JPA cannot change an entity's subclass, so the subtype row is swapped with native SQL.
-     * Refused (409) when the user already owns role-specific data (responses/mastery or assessments).
      */
     public UserResponse changeRole(Long id, Role newRole, String actingEmail) {
         User user = find(id);
@@ -105,12 +93,6 @@ public class UserService {
         if (oldRole == newRole) return toResponse(user);
         if (user.getEmail().equalsIgnoreCase(actingEmail)) {
             throw ApiException.badRequest("You cannot change your own role");
-        }
-        if (oldRole == Role.STUDENT && (responses.existsByStudentId(id) || masteries.existsByStudentId(id))) {
-            throw ApiException.conflict("Student already has submissions or mastery records; role cannot be changed");
-        }
-        if (oldRole == Role.INSTRUCTOR && assessments.existsByInstructorId(id)) {
-            throw ApiException.conflict("Instructor owns assessments; role cannot be changed");
         }
         em.flush();
         em.clear();
