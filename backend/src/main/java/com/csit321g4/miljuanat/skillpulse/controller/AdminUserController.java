@@ -26,13 +26,6 @@ public class AdminUserController {
     @ResponseStatus(HttpStatus.CREATED)
     public UserResponse create(@Valid @RequestBody CreateUserRequest req) { return userService.create(req); }
 
-        /** DELETE /api/admin/users/{id}/permanent - removes the user completely. */
-    @DeleteMapping("/{id}/permanent")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletePermanently(@PathVariable Long id, Principal p) {
-        userService.deletePermanently(id, p.getName());
-    }
-
     /** GET /api/admin/users?role=STUDENT - list users, optionally by role. */
     @GetMapping
     public List<UserResponse> list(@RequestParam(required = false) Role role) { return userService.list(role); }
