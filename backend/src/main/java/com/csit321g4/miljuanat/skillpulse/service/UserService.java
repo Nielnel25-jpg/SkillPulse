@@ -62,14 +62,6 @@ public class UserService {
         return toResponse(find(id));
     }
 
-    public void deletePermanently(Long id, String actingEmail) {
-        User user = find(id);
-        if (user.getEmail().equalsIgnoreCase(actingEmail)) {
-            throw ApiException.badRequest("You cannot delete your own account");
-        }
-        users.delete(user);
-    }
-
     public UserResponse update(Long id, UpdateUserRequest req) {
         User user = find(id);
         if (req.fullName() != null && !req.fullName().isBlank()) user.setFullName(req.fullName());
@@ -92,21 +84,9 @@ public class UserService {
         return toResponse(user);
     }
 
-<<<<<<< HEAD
     /**
      * Changes a user's role. JPA cannot change an entity's subclass, so the subtype row is swapped with native SQL.
      */
-=======
-        public void deletePermanently(Long id, String actingEmail) {
-        User user = find(id);
-        if (user.getEmail().equalsIgnoreCase(actingEmail)) {
-            throw ApiException.badRequest("You cannot delete your own account");
-        }
-        users.delete(user);
-    }
-
-    
->>>>>>> f3f186456af0ad4edc445cc82bd1781e407382cf
     public UserResponse changeRole(Long id, Role newRole, String actingEmail) {
         User user = find(id);
         Role oldRole = user.getRole();
