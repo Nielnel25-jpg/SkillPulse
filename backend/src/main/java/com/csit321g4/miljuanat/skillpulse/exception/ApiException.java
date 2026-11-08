@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package com.csit321g4.miljuanat.skillpulse.exception;
 
 import org.springframework.http.HttpStatus;
@@ -16,4 +17,16 @@ public class ApiException extends RuntimeException {
     public static ApiException badRequest(String message) { return new ApiException(HttpStatus.BAD_REQUEST, message); }
     public static ApiException conflict(String message) { return new ApiException(HttpStatus.CONFLICT, message); }
     public static ApiException forbidden(String message) { return new ApiException(HttpStatus.FORBIDDEN, message); }
+=======
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+
+package com.csit321g4.miljuanat.skillpulse.exception;
+
+
+public class ApiException {
+
+>>>>>>> f3f186456af0ad4edc445cc82bd1781e407382cf
 }
