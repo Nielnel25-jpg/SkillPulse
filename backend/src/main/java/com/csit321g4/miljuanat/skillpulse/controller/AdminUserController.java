@@ -1,18 +1,16 @@
 package com.csit321g4.miljuanat.skillpulse.controller;
 
-import com.csit321g4.miljuanat.skillpulse.dto.UserDtos.ChangeRoleRequest;
 import com.csit321g4.miljuanat.skillpulse.dto.UserDtos.CreateUserRequest;
 import com.csit321g4.miljuanat.skillpulse.dto.UserDtos.UpdateUserRequest;
 import com.csit321g4.miljuanat.skillpulse.dto.UserDtos.UserResponse;
-import com.csit321g4.miljuanat.skillpulse.model.Role;
+import com.csit321g4.miljuanat.skillpulse.enums.Role;
 import com.csit321g4.miljuanat.skillpulse.service.UserService;
 import jakarta.validation.Valid;
-import java.security.Principal;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-/** ADMIN only (enforced in SecurityConfig). */
+/** User management endpoints (security is not added yet in this increment). */
 @RestController
 @RequestMapping("/api/admin/users")
 public class AdminUserController {
@@ -38,27 +36,21 @@ public class AdminUserController {
         return userService.update(id, req);
     }
 
-    /** PATCH /api/admin/users/{id}/role - assign/change role (409 if the user owns role-specific data). */
-    @PatchMapping("/{id}/role")
-    public UserResponse changeRole(@PathVariable Long id, @Valid @RequestBody ChangeRoleRequest req, Principal p) {
-        return userService.changeRole(id, req.role(), p.getName());
-    }
-
     /** DELETE = deactivate (soft delete) so historical responses stay intact. */
     @DeleteMapping("/{id}")
-    public UserResponse deactivate(@PathVariable Long id, Principal p) {
-        return userService.setActive(id, false, p.getName());
+    public UserResponse deactivate(@PathVariable Long id) {
+        return userService.setActive(id, false);
     }
 
-    /** DELETE /api/admin/users/{id}/permanent - removes the user completely. */
+    /** DELETE /api/admin/users/{id}/permanent - removes the user completely (cannot be undone). */
     @DeleteMapping("/{id}/permanent")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletePermanently(@PathVariable Long id, Principal p) {
-        userService.deletePermanently(id, p.getName());
+    public void deletePermanently(@PathVariable Long id) {
+        userService.deletePermanently(id);
     }
 
     @PatchMapping("/{id}/activate")
-    public UserResponse activate(@PathVariable Long id, Principal p) {
-        return userService.setActive(id, true, p.getName());
+    public UserResponse activate(@PathVariable Long id) {
+        return userService.setActive(id, true);
     }
 }

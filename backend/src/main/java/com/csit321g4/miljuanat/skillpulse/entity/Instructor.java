@@ -1,4 +1,6 @@
-package com.csit321g4.miljuanat.skillpulse.model;
+package com.csit321g4.miljuanat.skillpulse.entity;
+
+import com.csit321g4.miljuanat.skillpulse.enums.Role;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

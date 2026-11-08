@@ -1,6 +1,6 @@
 package com.csit321g4.miljuanat.skillpulse.dto;
 
-import com.csit321g4.miljuanat.skillpulse.model.Role;
+import com.csit321g4.miljuanat.skillpulse.enums.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -25,8 +25,6 @@ public final class UserDtos {
             @Size(min = 8, message = "must be at least 8 characters") String password,
             String studentNumber,
             String department) {}
-
-    public record ChangeRoleRequest(@NotNull Role role) {}
 
     public record UserResponse(
             Long id, String fullName, String email, Role role, boolean active, Instant createdAt,

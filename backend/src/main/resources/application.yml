@@ -16,15 +16,3 @@ spring:
 
 server:
   port: ${PORT:8080}
-
-skillpulse:
-  jwt:
-    # Must be at least 32 characters. Override JWT_SECRET in every real environment.
-    secret: ${JWT_SECRET:dev-only-skillpulse-secret-key-change-me-0123456789}
-    expiration-ms: 86400000
-  cors:
-    allowed-origins: ${CORS_ORIGINS:http://localhost:5173,http://localhost:3000}
-  bootstrap-admin:
-    email: ${ADMIN_EMAIL:admin@skillpulse.local}
-    password: ${ADMIN_PASSWORD:ChangeMe123!}
-    full-name: SkillPulse Admin

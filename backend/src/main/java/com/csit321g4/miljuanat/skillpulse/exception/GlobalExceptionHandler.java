@@ -6,9 +6,6 @@ import java.util.Map;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -28,16 +25,6 @@ public class GlobalExceptionHandler {
         Map<String, Object> map = base(HttpStatus.BAD_REQUEST, "Validation failed");
         map.put("fields", fields);
         return ResponseEntity.badRequest().body(map);
-    }
-
-    @ExceptionHandler({BadCredentialsException.class, DisabledException.class})
-    public ResponseEntity<Map<String, Object>> handleAuth(RuntimeException ex) {
-        return body(HttpStatus.UNAUTHORIZED, "Invalid email or password, or account is deactivated");
-    }
-
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<Map<String, Object>> handleDenied(AccessDeniedException ex) {
-        return body(HttpStatus.FORBIDDEN, "You do not have permission to perform this action");
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)

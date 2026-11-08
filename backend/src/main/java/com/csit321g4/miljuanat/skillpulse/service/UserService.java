@@ -4,13 +4,12 @@ import com.csit321g4.miljuanat.skillpulse.dto.UserDtos.CreateUserRequest;
 import com.csit321g4.miljuanat.skillpulse.dto.UserDtos.UpdateUserRequest;
 import com.csit321g4.miljuanat.skillpulse.dto.UserDtos.UserResponse;
 import com.csit321g4.miljuanat.skillpulse.exception.ApiException;
-import com.csit321g4.miljuanat.skillpulse.model.Admin;
-import com.csit321g4.miljuanat.skillpulse.model.Instructor;
-import com.csit321g4.miljuanat.skillpulse.model.Role;
-import com.csit321g4.miljuanat.skillpulse.model.Student;
-import com.csit321g4.miljuanat.skillpulse.model.User;
+import com.csit321g4.miljuanat.skillpulse.entity.Admin;
+import com.csit321g4.miljuanat.skillpulse.entity.Instructor;
+import com.csit321g4.miljuanat.skillpulse.enums.Role;
+import com.csit321g4.miljuanat.skillpulse.entity.Student;
+import com.csit321g4.miljuanat.skillpulse.entity.User;
 import com.csit321g4.miljuanat.skillpulse.repository.UserRepository;
-import jakarta.persistence.EntityManager;
 import java.util.List;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,12 +21,10 @@ public class UserService {
 
     private final UserRepository users;
     private final PasswordEncoder encoder;
-    private final EntityManager em;
 
-    public UserService(UserRepository users, PasswordEncoder encoder, EntityManager em) {
+    public UserService(UserRepository users, PasswordEncoder encoder) {
         this.users = users;
         this.encoder = encoder;
-        this.em = em;
     }
 
     public UserResponse create(CreateUserRequest req) {
@@ -75,49 +72,16 @@ public class UserService {
         return toResponse(user);
     }
 
-    public UserResponse setActive(Long id, boolean active, String actingEmail) {
+    public UserResponse setActive(Long id, boolean active) {
         User user = find(id);
-        if (!active && user.getEmail().equalsIgnoreCase(actingEmail)) {
-            throw ApiException.badRequest("You cannot deactivate your own account");
-        }
         user.setActive(active);
         return toResponse(user);
     }
 
-        public void deletePermanently(Long id, String actingEmail) {
+    /** Removes the user (and the matching student/instructor row) completely. Cannot be undone. */
+    public void deletePermanently(Long id) {
         User user = find(id);
-        if (user.getEmail().equalsIgnoreCase(actingEmail)) {
-            throw ApiException.badRequest("You cannot delete your own account");
-        }
         users.delete(user);
-    }
-
-    /**
-     * Changes a user's role. JPA cannot change an entity's subclass, so the subtype row is swapped with native SQL.
-     */
-    public UserResponse changeRole(Long id, Role newRole, String actingEmail) {
-        User user = find(id);
-        Role oldRole = user.getRole();
-        if (oldRole == newRole) return toResponse(user);
-        if (user.getEmail().equalsIgnoreCase(actingEmail)) {
-            throw ApiException.badRequest("You cannot change your own role");
-        }
-        em.flush();
-        em.clear();
-        em.createNativeQuery("delete from " + table(oldRole) + " where id = :id").setParameter("id", id).executeUpdate();
-        em.createNativeQuery("update users set role = :role where id = :id")
-                .setParameter("role", newRole.name()).setParameter("id", id).executeUpdate();
-        em.createNativeQuery("insert into " + table(newRole) + " (id) values (:id)").setParameter("id", id).executeUpdate();
-        em.clear();
-        return toResponse(find(id));
-    }
-
-    private static String table(Role role) {
-        return switch (role) {
-            case STUDENT -> "students";
-            case INSTRUCTOR -> "instructors";
-            case ADMIN -> "admins";
-        };
     }
 
     private User find(Long id) {
