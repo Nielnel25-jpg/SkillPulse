@@ -34,10 +34,7 @@ public class JwtService {
                 .compact();
     }
 
-    /**
-     * Returns the subject (email) if the token is well-formed, signed by us and not
-     * expired.
-     */
+    /** Returns the subject (email) if the token is well-formed, signed by us and not expired. */
     public Optional<String> extractEmail(String token) {
         try {
             Claims claims = Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload();

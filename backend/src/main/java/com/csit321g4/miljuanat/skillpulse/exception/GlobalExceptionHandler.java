@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(map);
     }
 
-    @ExceptionHandler({ BadCredentialsException.class, DisabledException.class })
+    @ExceptionHandler({BadCredentialsException.class, DisabledException.class})
     public ResponseEntity<Map<String, Object>> handleAuth(RuntimeException ex) {
         return body(HttpStatus.UNAUTHORIZED, "Invalid email or password, or account is deactivated");
     }

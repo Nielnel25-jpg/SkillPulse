@@ -23,10 +23,7 @@ public class AuthService {
         this.jwtService = jwtService;
     }
 
-    /**
-     * Invalid credentials / deactivated accounts raise AuthenticationException ->
-     * 401 via GlobalExceptionHandler.
-     */
+    /** Invalid credentials / deactivated accounts raise AuthenticationException -> 401 via GlobalExceptionHandler. */
     public AuthResponse login(LoginRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.email(), request.password()));

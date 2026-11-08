@@ -1,4 +1,3 @@
-
 package com.csit321g4.miljuanat.skillpulse.controller;
 
 import com.csit321g4.miljuanat.skillpulse.dto.AuthDtos.AuthResponse;
@@ -18,11 +17,9 @@ public class AuthController {
 
     private final AuthService authService;
 
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
+    public AuthController(AuthService authService) { this.authService = authService; }
 
-    /** POST /api/auth/login -> JWT + user info (401 on bad credentials). */
+    /** POST /api/auth/login  -> JWT + user info (401 on bad credentials). */
     @PostMapping("/login")
     public AuthResponse login(@Valid @RequestBody LoginRequest request) {
         return authService.login(request);
