@@ -1,4 +1,4 @@
-   target/
-   .vscode/
-   .idea/
-   *.class
+target/
+.vscode/
+.idea/
+*.class
