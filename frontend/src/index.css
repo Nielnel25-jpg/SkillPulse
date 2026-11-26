@@ -197,3 +197,40 @@ body {
   background: #e0e7ff;
   color: #3730a3;
 }
+
+/* Feature pages */
+.page-wide { max-width: 960px; margin: 2rem auto; padding: 0 1.5rem; }
+.panel { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; }
+.panel h2 { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; }
+.row { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
+.row-between { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+@media (max-width: 720px) { .grid-2 { grid-template-columns: 1fr; } }
+.list-item { padding: 0.75rem 0; border-bottom: 1px solid var(--border); }
+.list-item:last-child { border-bottom: none; }
+.muted { color: var(--muted); font-size: 0.875rem; }
+.input { width: 100%; padding: 0.5rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius); font: inherit; background: #fff; }
+.btn-sm { padding: 0.35rem 0.75rem; font-size: 0.8rem; width: auto; }
+.btn-danger { background: transparent; color: var(--danger); border: 1px solid #fecaca; }
+.badge-green { background: #dcfce7; color: #166534; }
+.badge-gray { background: #f3f4f6; color: #374151; }
+.badge-red { background: #fee2e2; color: #991b1b; }
+.link-btn { color: var(--primary); text-decoration: none; font-size: 0.875rem; font-weight: 500; }
+
+/* Mastery bars */
+.bar-row { display: grid; grid-template-columns: 160px 1fr 56px; gap: 0.75rem; align-items: center; margin-bottom: 0.6rem; font-size: 0.875rem; }
+.bar-track { background: #f3f4f6; border-radius: 999px; height: 10px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 999px; }
+.bar-weak { background: #dc2626; }
+.bar-mid { background: #f59e0b; }
+.bar-strong { background: #16a34a; }
+.bar-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bar-pct { text-align: right; font-variant-numeric: tabular-nums; }
+
+/* Quiz */
+.option { display: flex; gap: 0.6rem; align-items: center; padding: 0.55rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 0.5rem; cursor: pointer; }
+.option:hover { border-color: var(--primary); }
+.option.selected { border-color: var(--primary); background: #eef2ff; }
+.option.correct { border-color: #86efac; background: #f0fdf4; }
+.option.wrong { border-color: #fecaca; background: #fef2f2; }
+.stat { font-size: 2rem; font-weight: 700; }
